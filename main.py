@@ -6,33 +6,33 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import classification_report, accuracy_score
 from sklearn.preprocessing import StandardScaler
 
-# Load the dataset
 df = pd.read_csv('emails.csv')
 
-# Drop the first column (Email No.)
+# Drop the first column
 df = df.drop('Email No.', axis=1)
 
 # Separate features and target
-X = df.drop('Prediction', axis=1)  # Features
-y = df['Prediction']  # Target (spam or not)
+X = df.drop('Prediction', axis=1)
+y = df['Prediction']
 
-# Split the data into training and test sets (80% train, 20% test)
+# Split the data into training and testing
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
-# Scale the data (optional but recommended for models sensitive to feature scaling)
+# Scaling the data
 scaler = StandardScaler()
 X_train = scaler.fit_transform(X_train)
 X_test = scaler.transform(X_test)
 
-# Initialize the Random Forest model
+# Random Forest model
 rf = RandomForestClassifier(random_state=42)
-# Define a simple logistic regression
+
+# Simple logistic regression
 log_reg = LogisticRegression(solver='liblinear')
 
 # Define the hyperparameter space for Grid Search
 param_grid = {
-    'C': [0.01, 0.1, 1, 10],  # Regularization strength
-    'penalty': ['l1', 'l2']   # L1 or L2 regularization
+    'C': [0.01, 0.1, 1, 10], 
+    'penalty': ['l1', 'l2'] 
 }
 
 # Define the hyperparameter space for Random Search
@@ -74,7 +74,6 @@ import seaborn as sns
 # Predictions on the test data
 y_pred = random_search.predict(X_test)
 
-# Accuracy
 print(f"Accuracy: {accuracy_score(y_test, y_pred):.4f}")
 
 # Classification Report
